@@ -128,7 +128,6 @@ const reducers = (function() {
 	}
 
 	function matrices(state = [[[0]]], action) {
-		console.log(state)
 		switch(action.type) {
 			case ADD_MATRIX:
 				return [
