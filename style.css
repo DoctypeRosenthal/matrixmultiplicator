@@ -1,0 +1,336 @@
+
+body {
+	line-height: 1.525em;
+	text-align: center;
+	margin: 0px;
+	font-family: Sans;
+}
+
+#app {
+	padding: 0;
+	text-align: left;
+	margin: 2em 0;
+	display: inline-block;
+	position: relative;
+	width: 800px;
+}
+
+
+h1 {
+	font-weight: 100;
+	color: rgb(206, 203, 203);
+	font-size: 2.5rem;
+	margin: .4em 0;
+}
+
+h2 {
+	color: rgb(170, 165, 165);
+	font-weight: 300;
+}
+
+h4 {
+	font-weight: 500;
+	font-size: 1.1rem
+}
+input {
+	border: 1px solid transparent;
+	width: 30px;
+	text-align: center;
+	font: inherit;
+	height: 1.3em;
+	color: black;
+}
+
+input:hover, input:focus {
+	border-color: rgb(180,180,180);
+}
+
+input::placeholder {
+	color: rgb(90, 80, 80);
+	font-style: italic;
+}
+
+button {
+ font: inherit;
+ font-size: .9em;
+ color: rgb(80,80,80);
+ border: 1px solid rgb(210,210,210);
+ background: rgb(245,245,245);
+ border-radius: 5px;
+ padding: .4em;
+ box-shadow: 0 1px 2px -1px rgb(80,80,80);
+}
+
+button:hover {
+ color: black;
+ cursor: pointer;
+}
+
+.floatleft {
+	float: left;
+}
+
+.floatright {
+	float: right;
+}
+
+.width100 {
+	width: 100%;
+	clear: both;
+}
+
+kbd {
+	border: 1px solid rgb(200, 200, 200);
+	background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+	padding: 1px 3px;
+	box-shadow: 0px 1px 1px 0px rgb(84, 84, 84);
+	border-radius: 3px;
+}
+
+
+.row {
+	display: flex;
+	align-content: center;
+	align-items: center;
+	width: 100%;
+	position: relative;
+}
+
+.row + .row {
+	margin-top: 1.3em;
+}
+
+.delete {
+	color: red
+}
+
+.help {
+	position: absolute;
+	right: 0;
+	top: calc(50% - .7em);
+	border: 2px solid black;
+	border-radius: 100%;
+	height: 1.5em;
+	width: 1.5em;
+	cursor: default;
+	transition: all .3s;
+	z-index: 1000;
+}
+
+.help::before {
+	content: "?";
+	position: relative;
+	display: block;
+	font-weight: 700;
+	text-align: center;
+}
+
+.help > .hint {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.help:hover {
+	transform: scale(1.2)
+}
+
+.help:hover > .hint {
+	visibility: visible;
+	opacity: 1;
+}
+
+.hint {
+	position: absolute;
+	left: calc(100% - 370px - 3em);
+	margin-top: 1em;
+	width: 370px;
+	padding: 1.5em;
+	font-size: 0.85em;
+	line-height: 2em;
+	box-shadow: 2px 2px 8px -1px grey;
+	background-color: rgb(254, 255, 201);
+	background: linear-gradient(to bottom,  rgb(252, 239, 148) 0%,rgb(255, 251, 218) 100%);
+	transition: all .3s;
+}
+
+.equalSign {
+	padding: 0 10px
+}
+
+.matrixWrapper {
+	border: 1px solid transparent;
+	margin-top: 1.5em;
+	position: relative;
+	display: inline-block;
+}
+
+.matrixWrapper + .matrixWrapper {
+	margin-left: 10px
+}
+
+.matrix {
+	border-style: none solid none solid;
+	border-color: black;
+	border-width: 2px;
+	border-radius: 10px;
+	padding: 10px
+	
+}
+
+.matrix.selected {
+	background: rgb(181, 205, 242)
+}
+
+.matrixRow {
+	transition: all .3s;
+	box-shadow: 1px 2px 7px -3px transparent;
+	position: relative;
+	display: flex;
+}
+
+.matrixRow:hover {
+	background: white;
+	box-shadow: 1px 2px 7px -3px rgb(0, 0, 0);
+}
+
+.matrixCol {
+	padding: 10px;
+}
+
+.matrix input {
+	background: none;
+	margin: -5px;
+}
+
+.matrix input:disabled {
+	border-color: transparent;
+}
+
+
+.matrixName {
+	text-align: center
+}
+
+.matrixOperations,
+.rowOperations {
+	position: absolute;
+	transition: all .3s;
+	background-color: rgb(255,255,255);
+	visibility: hidden;
+	opacity:0;
+    z-index: 1;
+    font-size: 0.95em;
+}
+
+.matrixOperations input,
+.rowOperations input {
+	border-bottom-color: rgb(180,180,180);
+}
+
+.matrixOperations {
+	box-sizing: border-box;
+	display: flex;
+	align-content: center;
+	align-items: center;
+	top: -2em;
+	height: 2em;
+	left: 0;
+	bottom: 100%;
+	min-width: 100%;
+}
+
+.matrixOperations > i {
+	font-style: normal;
+	cursor: pointer;
+	transition: all .2s;
+	display: inline-block;
+	padding: 8px;
+}
+
+.matrixOperations > i:hover {
+	transform: scale(1.3)
+}
+
+.rowOperations {
+	padding: 10px;
+	top: 0;
+	box-shadow: 1px 2px 7px -3px rgb(0, 0, 0);
+    left: 100%;
+}
+
+.rowOperations > input {
+	width: 12em;
+	padding: 5px;
+}
+
+.matrixWrapper:hover > .matrixOperations,
+.matrixRow:hover > .rowOperations {
+	visibility: visible;
+	opacity: 1;
+}
+
+.deleteAllBtn {
+	margin-left: 10px
+}
+
+.deleteAllBtn::before {
+	content: "♻";
+	font-size: 2.5em;
+	display: block;
+	transition: all .3s
+}
+
+.historySlider {
+	width: 0;
+	opacity: 0;
+	direction: rtl;
+	vertical-align: middle;
+	border: none;
+	transition: all .3s
+}
+
+.historySlider.hasHistory {
+	width: 200px;
+	opacity: 1;
+}
+
+.historySlider:focus {
+	outline: none
+}
+
+.newMatrixBtn {
+	font-weight: 600;
+	font-size: 1.6em;
+	margin: 0 0 0 10px;
+	position: relative;
+	line-height: 1;
+	border-color: rgb(152, 192, 132);
+	background: rgb(60, 255, 0);
+}
+
+.newMatrixBtn::before {
+	content: "+";
+	font-weight: 700;
+	color: rgb(32, 65, 16);
+	position: relative;
+	display: block;
+	transition: all .3s;
+	//text-shadow: .02em .02em .05em rgb(50,50,50)
+}
+
+.newMatrixBtn:hover::before {
+	color: black;
+	transform: scale(1.1)
+}
+
+
+input.calculation {
+	width: 400px;
+	box-shadow: 0 1px 2px -1px rgb(80,80,80);
+	border-color: rgb(220,220,220);
+	padding: 5px;
+	border-radius: 3px;
+	transition: all .3s;
+	text-align: right
+}
+
