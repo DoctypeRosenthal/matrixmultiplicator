@@ -153,6 +153,7 @@ const reducers = (function() {
 
 			case DEL_MATRIX:
 				if (state.length === 1) {
+					// reset state to only one matrix
 					return [[[0]]]
 				}
 				return state.filter((x, i) => i !== action.matrixID)
