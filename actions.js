@@ -18,7 +18,10 @@ const actionNames = {
 	MATRIX_MULTIPLICATION: 'MATRIX_MULTIPLICATION',
 	MATRIX_ADDITION: 'MATRIX_ADDITION',
 	TOGGLE_SELECT_MATRIX: 'TOGGLE_SELECT_MATRIX',
-	RECALC_RESULT: 'RECALC_RESULT'
+	RECALC_RESULT: 'RECALC_RESULT',
+
+	UNDO: 'UNDO',
+	REDO: 'REDO'
 }
 
 const actionCreators = (function() {
@@ -91,6 +94,14 @@ const actionCreators = (function() {
 		return out
 	}
 
+	function undo() {
+		return {type: actionNames.UNDO}
+	}
+
+	function redo() {
+		return {type: actionNames.REDO}
+	}
+
 	const thunks = alwaysRecalcResultAfter(
 		setCalcDirective,
 		removeMatrix,
@@ -111,7 +122,10 @@ const actionCreators = (function() {
 	return mergeObj(thunks, {
 		createMatrix, 
 		deleteAllMatrices,
-		toggleSelectMatrix
+		toggleSelectMatrix,
+
+		undo,
+		redo
 	})
 
 })()

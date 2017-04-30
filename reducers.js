@@ -19,7 +19,10 @@ const reducers = (function() {
 		MATRIX_MULTIPLICATION,
 		MATRIX_ADDITION,
 		RECALC_RESULT,
-		TOGGLE_SELECT_MATRIX
+		TOGGLE_SELECT_MATRIX,
+
+		UNDO,
+		REDO
 	} = actionNames
 	const {mergeObj} = utils
 
@@ -125,6 +128,7 @@ const reducers = (function() {
 	}
 
 	function matrices(state = [[[0]]], action) {
+		console.log(state)
 		switch(action.type) {
 			case ADD_MATRIX:
 				return [
@@ -212,11 +216,77 @@ const reducers = (function() {
 		}
 	}
 
+	/**
+	 * Higher order reducer to add a history to a normal reducer 
+	 * @param  {Function} reducer The reducer to enhance
+	 * @return {Function}         The enhanced reducer
+	 */
+	function undoable(reducer) {
+	    // Call the reducer with empty action to populate the initial state
+	    let history = {
+	        past: [],
+	        present: undefined,
+	        future: []
+	    }
+
+	    // Return a reducer that handles undo and redo
+	    return function(state = history.present, action) {
+	        const { past, present, future } = history
+
+	        switch (action.type) {
+	            case UNDO:
+	            	if (past.length === 1) {
+	            		// nothing else to undo
+	            		return present
+	            	}
+
+	                const previous = past[past.length - 1]
+	                const newPast = past.slice(0, past.length - 1)
+	                history = {
+	                    past: newPast,
+	                    present: previous,
+	                    future: [present, ...future]
+	                }
+	                break
+
+	            case REDO:
+	            	if (future.length === 0) {
+	            		// nothing else to redo
+	            		return present
+	            	}
+
+	                const next = future[0]
+	                const newFuture = future.slice(1)
+	                history = {
+	                    past: [...past, present],
+	                    present: next,
+	                    future: newFuture
+	                }
+	                break
+
+	            default:
+	                // Delegate handling the action to the passed reducer
+	                const newPresent = reducer(state, action)
+	                if (present === newPresent) {
+	                    return present
+	                }
+	                history = {
+	                    past: [...past, present],
+	                    present: newPresent,
+	                    future: []
+	                }
+	                break
+	        }
+
+	        return history.present
+	    }
+	}
+
 
 	// "exports"
-	return [
-		calcDirective,
-		matrices,
-		result
-	]
+	return {
+		calcDirective: undoable(calcDirective),
+		matrices: undoable(matrices),
+		result: undoable(result)
+	}
 })()

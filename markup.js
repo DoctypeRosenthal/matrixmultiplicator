@@ -1,7 +1,6 @@
 const markup = (function() {
 	// "imports"
 	const {connect} = redux,
-		{connectHistory} = reduxHistory,
 		{multiplyMatrices, parseNumber, displayStateAsJson, getLetterFromId} = utils,
 		actions = actionCreators
 
@@ -195,7 +194,7 @@ const markup = (function() {
 		}
 	}
 
-	function App({matrices, result, selectedMatrix, undo, redo, gotoState, getHistorySize, getIndexOfNow, dispatch}) {
+	function App({matrices, result, selectedMatrix, dispatch}) {
 		return [
 			{
 				tag: 'div',
@@ -223,24 +222,6 @@ const markup = (function() {
 						className: 'delete deleteAllBtn',
 						title: 'Alle Matrizen löschen',
 						onclick: () => dispatch(actions.deleteAllMatrices())
-					},
-				]
-			},
-			{
-				tag: 'div',
-				className: 'row',
-				children: [
-					'&nbsp;Verlauf: ',
-					{
-						tag: 'input',
-						className: 'historySlider' + (getHistorySize() > 1 ? ' hasHistory': ''),
-						type: 'range',
-						max: getHistorySize() - 1,
-						title: 'Regler bewegen um in der Geschichte zu reisen',
-						min: 0,
-						step: 1,
-						value: getIndexOfNow(),
-						oninput: evt => gotoState(evt.target.value)
 					},
 				]
 			},
@@ -294,7 +275,7 @@ const markup = (function() {
 	} 
 
 	return {
-		App: connectHistory(connect(App))
+		App: connect(App)
 	}
 })()
 

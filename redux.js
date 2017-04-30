@@ -3,7 +3,7 @@ const redux = (function() {
 	let {mergeObj} = utils
 	
 	let state = {},
-		reducers = [],
+		reducers = {},
 		subscriber = []
 
 	function getState() {
@@ -20,7 +20,11 @@ const redux = (function() {
 
 	function createStore(fns, initState) {
 		reducers = fns
-		reducers.forEach(r => state[r.name] = r(initState[r.name], {type: undefined})) //initialise Store
+		Object.keys(fns).forEach(key => {
+			// register reducers
+			state[key] = fns[key](initState[key], {}) //initialise Store
+		}) 
+
 		return {
 			getState,
 			dispatch,
@@ -33,9 +37,7 @@ const redux = (function() {
 			// action is a thunk
 			return action(dispatch, getState)
 		}
-		let nextState = {} // very important step here: make a new object for every state!
-		reducers.forEach(r => nextState[r.name] = r(state[r.name], action))
-		state = nextState
+		Object.keys(state).forEach(key => state[key] = reducers[key](state[key], action))
 		updateSubscribers()
 	}
 
@@ -47,7 +49,6 @@ const redux = (function() {
 
 	return {
 		createStore,
-		dispatch,
 		connect
 	}
 })()
