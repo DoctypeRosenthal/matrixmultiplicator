@@ -523,7 +523,7 @@
 			"file": "app.js",
 			"settings":
 			{
-				"buffer_size": 1002,
+				"buffer_size": 923,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -532,25 +532,16 @@
 			"file": "markup.js",
 			"settings":
 			{
-				"buffer_size": 7375,
+				"buffer_size": 6836,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "style.css",
+			"file": "redux.js",
 			"settings":
 			{
-				"buffer_size": 4894,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "utils.js",
-			"settings":
-			{
-				"buffer_size": 3846,
+				"buffer_size": 951,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -559,7 +550,16 @@
 			"file": "reducers.js",
 			"settings":
 			{
-				"buffer_size": 5661,
+				"buffer_size": 7776,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "actions.js",
+			"settings":
+			{
+				"buffer_size": 3973,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -680,15 +680,18 @@
 	],
 	"file_history":
 	[
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/actions.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/DOM.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/style.css",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/redux.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/.gitignore",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/page.html",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/reduxHistory.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/reducers.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/README.md",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/utils.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/style.css",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/markup.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/.git/config",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/reducers.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/actions.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/DOM.js",
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/redux.js",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/unitTest.js",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenrechner2/controller.js",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Matrizenmultiplikation/Matrizenmultiplikation.html",
@@ -804,10 +807,7 @@
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/actions.creators.js",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/actions.names.js",
 		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/containers/Dialog/Wrapper.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/queries.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/views/BrowseList/Protocol.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/pages/Protocol.js",
-		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/pages/Products.js"
+		"/mnt/Data/Dokumente/Programmizzle/JavaScript/Sell/app/queries.js"
 	],
 	"find":
 	{
@@ -849,6 +849,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"internalState",
+			"x",
 			"remove",
 			"delete",
 			"100",
@@ -974,9 +976,7 @@
 			"\t// shouldComponentUpdate(nextProps, nextState) {\n\t// \tlet {selectedIds, orders, isFetching} = nextProps \n\t// \treturn (\n\t// \t\tselectedIds !== this.props.selectedIds && \n\t// \t\torders !== this.props.orders &&\n\t// \t\tisFetching !== this.props.isFetching\n\t// \t)\n\t// }\n\n\tcomponentWillUpdate(nextProps, nextState) {\n\t}",
 			"calculationNecessary",
 			"fetchCustomersListPreview",
-			"fetchItem",
-			"fetchOrderListPreviews",
-			"fetchOrder"
+			"fetchItem"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1099,7 +1099,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1108,15 +1108,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1002,
+						"buffer_size": 923,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								184,
-								184
+								136,
+								136
 							]
 						],
 						"settings":
@@ -1129,7 +1129,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -1138,50 +1138,49 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7375,
+						"buffer_size": 6836,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1989,
-								2089
+								5245,
+								5245
 							]
 						],
 						"settings":
 						{
-							"is_xml": false,
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 887.0,
+						"translation.y": 3239.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "style.css",
+					"file": "redux.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4894,
+						"buffer_size": 951,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								203,
-								203
+								725,
+								725
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -1193,65 +1192,57 @@
 				},
 				{
 					"buffer": 3,
-					"file": "utils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3846,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3710,
-								3710
-							]
-						],
-						"settings":
-						{
-							"rulers":
-							[
-								80
-							],
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1728.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "reducers.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5661,
+						"buffer_size": 7776,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								397,
-								397
+								6809,
+								6809
 							]
 						],
 						"settings":
 						{
-							"rulers":
-							[
-								80
-							],
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2976.0,
+						"translation.y": 3575.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "actions.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3973,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3962,
+								3962
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1200.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
