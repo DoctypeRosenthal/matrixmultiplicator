@@ -64,15 +64,14 @@ const DOM = (function() {
 	}
 
 	function diffElementLists(parentDOMNode, nextList) {
-		let nodeList = parentDOMNode.children // Referenz auf die Kinder von parentDOMNode
-		// Vergleiche jedes Element aus nextList mit jedem Kind-Knoten von parentDOMNode
-		nextList.forEach((x, i) => diffElements(parentDOMNode, nodeList[i], nextList[i]))
-
-		
-		while (nodeList.length > nextList.length) {	
+		let children = parentDOMNode.children // Referenz auf die Kinder von parentDOMNode
+		while (children.length > nextList.length) {	
 			// Lösche überzählige DOM-Knoten
 			parentDOMNode.lastChild.remove()
 		}
+
+		// Vergleiche jedes Element aus nextList mit jedem Kind-Knoten von parentDOMNode
+		nextList.forEach((x, i) => diffElements(parentDOMNode, children[i], nextList[i]))
 	}
 
 	function render(elementList) {

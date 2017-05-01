@@ -197,12 +197,14 @@ const reducers = (function() {
 						// x is number or operator. return as is.
 						return x
 					})
+					// now every array we encounter is a matrix! 
 					// 2.: transform subtraction in addition with a negative prefactor. 
 					// e.g.: 
 					// ['-', 'A'] => ['+', '-1', 'A']
 					// ['-', '2', 'A'] => ['+', '-2', 'A']
 					.reduce((out, x, i, arr) => {
 						if (x !== '-') {
+							// no minus! return as is.
 							return [...out, x]
 						}
 						// x is minus operator
@@ -217,12 +219,13 @@ const reducers = (function() {
 							return [...out, '+', '-1']
 						}
 					}, [])
-					// 3.: now every array we encounter is a matrix! arr is a flat, one-dimensional
+					// 3.: arr is a flat, one-dimensional
 					// Array of numbers, + operators and matrices.
 					// -> reduce it to an array of groups of matrices which are seperated by addition or subtraction
 					.reduce((out, x, i, arr) => {
 						if (isArr(x)) {
 							// x is a matrix
+							
 							if (isNum(arr[i-1])) {
 								// There is a prefactor -> scalar multiplication with matrix!
 								x = matrix(x, {type: SCALAR_MULTIPLICATION, scalar: parseFloat(arr[i-1])})

@@ -23,6 +23,7 @@ const utils = (function() {
 	}
 
 	function isNum(str) {
+		if (typeof str !== 'string') return false
 	    return !isNaN(parseFloat(str))
 	}
 

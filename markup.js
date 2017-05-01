@@ -40,29 +40,27 @@ const markup = (function() {
 	}
 
 	function Row({cols, isResultMatrix, onCreateCol, onCreateRow, onRemoveCol, onRemoveRow, onChangeEl, onTransform}) {
+		let children = cols.map((x, i) => Col({value: x, isResultMatrix, onCreateCol, onCreateRow, onRemoveCol: () => onRemoveCol(i), onRemoveRow, onChangeEl: val => onChangeEl(i, val)}))
+		if (isResultMatrix) {
+			children.push({
+				tag: 'div',
+				className: 'rowOperations',
+				children: [
+					{
+						tag: 'input',
+						defaultValue: '',
+						title: 'z.B. "+(-1)*I" oder "swap <gewünschte Zeile>" zum Zeilentausch',
+						placeholder: 'Zeilenumformung',
+						onchange: evt => onTransform(evt.target.value)
+					}
+				]
+			})
+		}
+
 		return {
 			tag: 'div',
 			className: 'matrixRow',
-			children: [
-				...cols.map((x, i) => Col({value: x, isResultMatrix, onCreateCol, onCreateRow, onRemoveCol: () => onRemoveCol(i), onRemoveRow, onChangeEl: val => onChangeEl(i, val)})),
-				(
-					isResultMatrix ? 
-					'' : 
-					{
-						tag: 'div',
-						className: 'rowOperations',
-						children: [
-							{
-								tag: 'input',
-								defaultValue: '',
-								title: 'z.B. "+(-1)*I" oder "swap <gewünschte Zeile>" zum Zeilentausch',
-								placeholder: 'Zeilenumformung',
-								onchange: evt => onTransform(evt.target.value)
-							}
-						]
-					}
-				)
-			]
+			children
 		}
 	}
 

@@ -5,7 +5,7 @@
 		{App} = markup
 
 	// initialise
-	let initialState = {"matrices":[[[1,0],[-2,0]],[[0,1],[-1,0]],[[1,1],[-3,0]],[[-2,1],[-3,-3]],[[1,1],[-3,0]]],"result":[[1,1],[-3,0]]},
+	let initialState = {"matrices":[[[1,0],[-2,0]],[[0,1],[-1,0]],[[1,1],[-3,0]],[[-2,1],[-3,-3]],[[1,1],[-3,0]],[[1],[0]]],"result":[[0],[0]]},
 		store = createStore(reducers, initialState)
 
 	store.registerSubscriber(currentState => DOM.render(App(currentState)))
