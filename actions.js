@@ -83,7 +83,7 @@ const actionCreators = (function() {
 		return {type: actionNames.CALC_RESULT, allMatrices: matrices, matrixIDs, prefactors}
 	}
 
-	function alwayscalcResultAfter(...actions) {
+	function alwaysRecalcResultAfter(...actions) {
 		let out = {}
 		actions.forEach(a => out[a.name] = (...args) => (dispatch, getState) => {
 			dispatch(a(...args))
