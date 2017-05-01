@@ -39,14 +39,6 @@ const utils = (function() {
 		return operators.includes(str)
 	}
 
-	function makeMultiplicationExplicit(str) {
-	    return str
-	        .replace(/(\)\()/, ')*(')
-	        .replace(/([\dA-Z]+)\(/, '$1*(')
-	        .replace(/(\d+)([A-Z]+)/, '$1*$2')
-	        .replace(/([A-Z])([A-Z])/, '$1*$2')        
-	}
-
 	/**
 	 * Group a string into arrays of strings by the string's brackets.
 	 * String needs to have no spaces
@@ -119,37 +111,6 @@ const utils = (function() {
 	}
 
 	/**
-	 * Transforms a user input into an array of groups (arrays) of matrix ids
-	 * 
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
-	 */
-	function getMatrixIDs(str) {
-		return str
-			// 1.: get all groups of letters.
-			.split(/[+-\d.]/)
-			// 1 b) filter out unwanted empty string at the beginning
-			.filter(x => x !== '')
-			// 2.: transform the strings of Matrix letters into arrays of matrixIDs.
-			.map(x => x.split('').map(x => getIdFromLetter(x)))
-	}
-	/**
-	 * Get the prefactors for a calculation directive in string form.
-	 * Special cases are '-' ≡ '(-1)*' and the empty string '' ≡ '1*'.
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
-	 */
-	function getPrefactors(str) {
-		return str
-			// make array of prefactors
-			.split(/[^+-\d.]+/)
-			// replace special cases in order to have a consistent array in the end
-			.map(x => x === '-' ? '-1' : (x === '+' || x === '' ? '+1' : x))
-			// parse every factor into a number
-			.map(x => parseNumber(x))
-	}
-
-	/**
 	 * Get the parameters for a row transformation from a user input.
 	 * E.g.: "-2III" means: subtract twice the third row from this row. -> ["-", "2", "III"]
 	 * 
@@ -203,12 +164,9 @@ const utils = (function() {
 		isNum,
 		isMatrixName,
 		isArr,
-		makeMultiplicationExplicit,
 		groupByBrackets,
 		displayStateAsJson,
 		romanNumToInt,
-		getPrefactors,
-		getMatrixIDs,
 		getTransformationDirective,
 		getDirectiveParams,
 		parseNumber
