@@ -122,7 +122,7 @@ const utils = (function() {
 			}
 		}
 		else if ((params[1] === '+' || params[1] === '-') && params[3]) {
-			// row transformation includes another row
+			// addition/subtraction of another row
 			return {
 				operation: params[1],
 				scalar: params[2] ? parseNumber(params[2]) : 1, // a signed float or rational number. defaults to 1.

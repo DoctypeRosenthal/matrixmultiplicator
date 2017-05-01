@@ -18,7 +18,7 @@ const reducers = (function() {
 		SCALAR_MULTIPLICATION,
 		MATRIX_MULTIPLICATION,
 		MATRIX_ADDITION,
-		RECALC_RESULT,
+		CALC_RESULT,
 		TOGGLE_SELECT_MATRIX,
 
 		UNDO,
@@ -171,7 +171,7 @@ const reducers = (function() {
 
 	function result(state = undefined, action) {
 		switch(action.type) {
-			case RECALC_RESULT:
+			case CALC_RESULT:
 				let {allMatrices, matrixIDs, prefactors} = action
 				if (matrixIDs.length === 0) return
 				return matrixIDs

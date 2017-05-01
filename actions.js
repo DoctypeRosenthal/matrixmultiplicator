@@ -18,7 +18,7 @@ const actionNames = {
 	MATRIX_MULTIPLICATION: 'MATRIX_MULTIPLICATION',
 	MATRIX_ADDITION: 'MATRIX_ADDITION',
 	TOGGLE_SELECT_MATRIX: 'TOGGLE_SELECT_MATRIX',
-	RECALC_RESULT: 'RECALC_RESULT',
+	CALC_RESULT: 'CALC_RESULT',
 
 	UNDO: 'UNDO',
 	REDO: 'REDO'
@@ -79,17 +79,17 @@ const actionCreators = (function() {
 
 	function toggleSelectMatrix(matrixID) { return {type: actionNames.TOGGLE_SELECT_MATRIX, matrixID} }
 
-	function recalcResult(matrices, matrixIDs, prefactors) {
-		return {type: actionNames.RECALC_RESULT, allMatrices: matrices, matrixIDs, prefactors}
+	function calcResult(matrices, matrixIDs, prefactors) {
+		return {type: actionNames.CALC_RESULT, allMatrices: matrices, matrixIDs, prefactors}
 	}
 
-	function alwaysRecalcResultAfter(...actions) {
+	function alwayscalcResultAfter(...actions) {
 		let out = {}
 		actions.forEach(a => out[a.name] = (...args) => (dispatch, getState) => {
 			dispatch(a(...args))
 			let {matrices, calcDirective} = getState(),
 				{matrixIDs, prefactors} = calcDirective
-			dispatch(recalcResult(matrices, matrixIDs, prefactors))
+			dispatch(calcResult(matrices, matrixIDs, prefactors))
 		})
 		return out
 	}
@@ -102,6 +102,7 @@ const actionCreators = (function() {
 		return {type: actionNames.REDO}
 	}
 
+	// Redux thunk = enhanced action
 	const thunks = alwaysRecalcResultAfter(
 		setCalcDirective,
 		removeMatrix,
