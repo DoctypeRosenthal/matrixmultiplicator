@@ -1,6 +1,4 @@
 const redux = (function() {
-	// "imports"
-	let {mergeObj} = utils
 	
 	let state = {},
 		reducers = {},
@@ -43,7 +41,7 @@ const redux = (function() {
 
 	function connect(Component) {
 		return function(props) {
-			return Component(mergeObj(props, {dispatch}))
+			return Component(props.merge({dispatch}))
 		}
 	}
 

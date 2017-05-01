@@ -1,5 +1,9 @@
 const utils = (function() {
 
+	Object.prototype.merge = function(o) {
+		return Object.assign({}, this, o)
+	}
+
 	/**
 	 * Maps every ID, beginning with 0, to a letter from the alphabet
 	 * @param  {Integer} ID A number in the range 0-24
@@ -18,14 +22,72 @@ const utils = (function() {
 		return letter.charCodeAt() - 65
 	}
 
+	function isNum(str) {
+	    return !isNaN(parseFloat(str))
+	}
+
+	function isMatrixName(str) {
+	    return !!str.match(/[A-Z]/)
+	}
+
+	function isArr(str) {
+	    return str instanceof Array
+	}
+
+	function isOperator(str) {
+		const operators = ['+', '-', '*']
+		return operators.includes(str)
+	}
+
+	function makeMultiplicationExplicit(str) {
+	    return str
+	        .replace(/(\)\()/, ')*(')
+	        .replace(/([\dA-Z]+)\(/, '$1*(')
+	        .replace(/(\d+)([A-Z]+)/, '$1*$2')
+	        .replace(/([A-Z])([A-Z])/, '$1*$2')        
+	}
+
+	/**
+	 * Group a string into arrays of strings by the string's brackets.
+	 * String needs to have no spaces
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	function groupByBrackets(str) {
+	    let openingBracketCount = 0,
+	        stringInBetween = ''
+	    return str
+	        .split('')
+	        .reduce((out, token, i, arr) => {
+	            if (token === '(') openingBracketCount ++
+	            if (token === ')') openingBracketCount --
+
+	            if (token === '(' && openingBracketCount === 1) {
+	                // first opening bracket
+	                // reset stringInBetween
+	                stringInBetween = ''
+	                // dont capture this bracket. Return out as is.
+	                return out
+	            }
+	            else if (token === ')' && openingBracketCount === 0) {
+	                // we found the matching bracket! 
+	                // Now call groupByBrackets() with the String since the opening bracket and add this to our out-Array
+	                return [...out, groupByBrackets(stringInBetween)]
+	            }
+	            else if (openingBracketCount > 0) {
+	                // find closing bracket on same level and add anything in between main brackets to stringInBetween
+	                stringInBetween += token
+	                return out
+	            }
+	            // we are not in search for a closing bracket. Just add token to out-Array.
+	            return [...out, token]
+	        }, [])
+	}
+
 	function displayStateAsJson(state) {
 		window.prompt("Strg+C zum kopieren:", JSON.stringify(state))
 	}
 
-	function mergeObj(...objects) {
-		return Object.assign({}, ...objects)
-	}
-	
 	function romanNumToInt(str) {
 		// provisorisch!!
 		const map = {
@@ -138,8 +200,12 @@ const utils = (function() {
 	return {
 		getIdFromLetter,
 		getLetterFromId,
+		isNum,
+		isMatrixName,
+		isArr,
+		makeMultiplicationExplicit,
+		groupByBrackets,
 		displayStateAsJson,
-		mergeObj,
 		romanNumToInt,
 		getPrefactors,
 		getMatrixIDs,

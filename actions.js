@@ -26,7 +26,7 @@ const actionNames = {
 
 const actionCreators = (function() {
 	// "imports"
-	const {getTransformationDirective, mergeObj} = utils
+	const {getTransformationDirective} = utils
 
 	function setCalcDirective(userInput) { 
 		return {type: actionNames.SET_CALC_DIRECTIVE, userInput}
@@ -79,17 +79,16 @@ const actionCreators = (function() {
 
 	function toggleSelectMatrix(matrixID) { return {type: actionNames.TOGGLE_SELECT_MATRIX, matrixID} }
 
-	function calcResult(matrices, matrixIDs, prefactors) {
-		return {type: actionNames.CALC_RESULT, allMatrices: matrices, matrixIDs, prefactors}
+	function calcResult(matrices, calcDirective) {
+		return {type: actionNames.CALC_RESULT, allMatrices: matrices, calcDirective}
 	}
 
 	function alwaysRecalcResultAfter(...actions) {
 		let out = {}
 		actions.forEach(a => out[a.name] = (...args) => (dispatch, getState) => {
 			dispatch(a(...args))
-			let {matrices, calcDirective} = getState(),
-				{matrixIDs, prefactors} = calcDirective
-			dispatch(calcResult(matrices, matrixIDs, prefactors))
+			let {matrices, calcDirective} = getState()
+			dispatch(calcResult(matrices, calcDirective))
 		})
 		return out
 	}
@@ -120,11 +119,10 @@ const actionCreators = (function() {
 		scalarMultiplication
 	)
 	
-	return mergeObj(thunks, {
+	return thunks.merge({
 		createMatrix, 
 		deleteAllMatrices,
 		toggleSelectMatrix,
-
 		undo,
 		redo
 	})

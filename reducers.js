@@ -24,7 +24,7 @@ const reducers = (function() {
 		UNDO,
 		REDO
 	} = actionNames
-	const {mergeObj} = utils
+	const {isArr, isNum, isMatrixName} = utils
 
 	function row(state = [], action) {
 		switch(action.type) {
@@ -79,7 +79,7 @@ const reducers = (function() {
 				// another row is given to put into the equation
 				// -> get it, multiply it with the given scalar, merge it into the action object and give it to the row reducer
 				let otherRow = row(state[action.otherRowID], {type: MULTIPLY_ROW, scalar: action.scalar})
-				return state.map((x, i) => i !== action.rowID ? x : row(x, mergeObj(action, {otherRow})))
+				return state.map((x, i) => i !== action.rowID ? x : row(x, action.merge({otherRow})))
 
 			case MULTIPLY_ROW:
 			case DIVIDE_ROW:
@@ -152,7 +152,7 @@ const reducers = (function() {
 				// this returns only one matrix! Not a whole set of matrices.
 				// But since it starts with the whole set of matrices, the matrices reducer 
 				// should handle it imo...
-				return state.length > 1 ? state.reduceRight((A, B) => matrix(B, mergeObj(action, {otherMatrix: A}))) : state[0]
+				return state.length > 1 ? state.reduceRight((A, B) => matrix(B, action.merge({otherMatrix: A}))) : state[0]
 
 			case DEL_MATRIX:
 				if (state.length === 1) {
@@ -169,36 +169,90 @@ const reducers = (function() {
 		}
 	}
 
+	/**
+	 * [result description]
+	 * @param  {[type]} state  [description]
+	 * @param  {[type]} action [description]
+	 * @return {Array/undefined}        result matrix or undefined if calculation is not possible
+	 */
 	function result(state = undefined, action) {
 		switch(action.type) {
 			case CALC_RESULT:
-				let {allMatrices, matrixIDs, prefactors} = action
-				if (matrixIDs.length === 0) return
-				return matrixIDs
-					// 1st: get the real matrices for every ID
-					.map(x => x.map(index => allMatrices[index])) 
-					// 2nd: calc the matrix products
-					.map(x => matrices(x, {type: MATRIX_MULTIPLICATION})) 
-					// 3d: multiply every product-matrix with its prefactor
-					.map((x,i) => prefactors[i] === '' ? x : matrix(x, {type: SCALAR_MULTIPLICATION, scalar: prefactors[i]})) 
-					// 4th: sum up all product matrices
-					.reduce((A,B) => matrix(A, {type: MATRIX_ADDITION, otherMatrix: B})) 
+				let {allMatrices, calcDirective} = action
+				if (calcDirective.length === 0) return
+				return calcDirective
+					// 1.: resolve nested calculations and matrices
+					.map(x => {
+						if (isArr(x)) {
+							// there is a nested calculation (in brackets)
+							// -> call this reducer with the nested directive!
+							return result(undefined, action.merge({calcDirective: x})) 
+						}
+
+						if (isMatrixName(x)) {
+							// this is a matrix name like A, B, C...
+							// -> replace this letter with the corresponding matrix
+							return allMatrices[utils.getIdFromLetter(x)]
+						}
+						// x is number or operator. return as is.
+						return x
+					})
+					// 2.: transform subtraction in addition with a negative prefactor. 
+					// e.g.: 
+					// ['-', 'A'] => ['+', '-1', 'A']
+					// ['-', '2', 'A'] => ['+', '-2', 'A']
+					.reduce((out, x, i, arr) => {
+						if (x !== '-') {
+							return [...out, x]
+						}
+						// x is minus operator
+						let nextEl = arr[i+1]
+						if (isNum(nextEl)) {
+							// next element is a number
+							let inverseNum = -1*parseFloat(nextEl)
+							return [...out, '+', inverseNum]
+						}
+						if (isArr(nextEl)) {
+							// next element is a matrix
+							return [...out, '+', '-1']
+						}
+					}, [])
+					// 3.: now every array we encounter is a matrix! arr is a flat, one-dimensional
+					// Array of numbers, + operators and matrices.
+					// -> reduce it to an array of groups of matrices which are seperated by addition or subtraction
+					.reduce((out, x, i, arr) => {
+						if (isArr(x)) {
+							// x is a matrix
+							if (isNum(arr[i-1])) {
+								// There is a prefactor -> scalar multiplication with matrix!
+								x = matrix(x, {type: SCALAR_MULTIPLICATION, scalar: parseFloat(arr[i-1])})
+							}
+							out[out.length-1].push(x)
+							return out
+						}
+						if (x === '+') {
+							// create new multiplication group
+							return [...out, []]
+						}
+						// do nothing
+						return out
+					}, [[]])
+					// 4.: calc the matrix products
+					.reduce((out, x) => [...out, matrices(x, {type: MATRIX_MULTIPLICATION})], [])
+					// 5.th: sum up all product matrices if possible
+					.reduce((A,B, i, arr) => arr.length === 1 ? A : matrix(A, {type: MATRIX_ADDITION, otherMatrix: B})) 
+
 			default:
 				return state
 		}
 	}
 
-	function calcDirective(state = {matrixIDs: [], prefactors: []}, action) {
+	function calcDirective(state = [], action) {
 		switch(action.type) {
 			case SET_CALC_DIRECTIVE:
-				// cut out any possible * (multiplication operators). We don't need them.
-				let input = action.userInput.replace(/\*+/g, '') 
-				return {
-					// get all matrix ids
-					matrixIDs: utils.getMatrixIDs(input), 
-					// get the prefactors.
-					prefactors: utils.getPrefactors(input)
-				} 
+				// strip out any multiplication operator
+				let input = action.userInput.replace(/\*/g, '') 
+				return utils.groupByBrackets(input)
 
 			default:
 				return state
