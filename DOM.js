@@ -36,6 +36,7 @@ const DOM = (function() {
 
 
 	function diffElements(parentDOMNode, childDOMNode, next) {
+		if (!next) return
 		if (typeof childDOMNode === 'undefined') {
 			// das Element childDOMNode existiert noch nicht -> erzeugen
 			childDOMNode = createNode(next)
