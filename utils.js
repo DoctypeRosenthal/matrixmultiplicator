@@ -1,5 +1,20 @@
 const utils = (function() {
 
+	/*
+	 * GLOBAL TYPES
+	 */
+	
+
+	window.ℚ = function(a, b) {
+		this.a = a
+		this.b = b
+	}
+
+	ℚ.prototype.toString = function() {
+		return this.a + '/' + this.b
+	}
+
+
 	Object.prototype.merge = function(o) {
 		return Object.assign({}, this, o)
 	}
@@ -24,7 +39,7 @@ const utils = (function() {
 
 	function isNum(str) {
 		if (typeof str !== 'string') return false
-	    return !isNaN(parseFloat(str))
+	    return !isNaN(parseFloat(str)) || str.match(/\d+\/\d+/)
 	}
 
 	function isMatrixName(str) {
