@@ -2,8 +2,60 @@
 
 function ℚ(numerator, denominator) {
 	if (denominator === 0) throw Error("Bruch darf keine 0 im Nenner haben")
+
 	this.p = numerator
 	this.q = denominator
+
+	// reduce if possible
+	this.reduce()
+}
+
+/**
+ * This returns a scalar if the denominator = 1 or if numerator = denominator.
+ * Otherwise it returns the fraction itself
+ * @return {[type]} [description]
+ */
+ℚ.prototype.valueOf = function() {
+	if (this.p === this.q)
+		return 1
+	else if (this.q === 1) // Nenner ist 1 => Rückgabewert ist nur der Zähler
+		return this.p 
+	else 
+		return this.valueOf()
+}
+
+ℚ.prototype.reduce = function() {
+	let x = this.p,
+		y = this.q,
+		out = []
+	
+	if (x < 0)
+		// Zähler vorübergehend positiv machen
+		x = x * (-1)
+		
+	if (y < 0)
+		// Nenner positiv machen
+		y = y * (-1)
+	
+	if (x === 0)
+		return 0
+	else if (x === y)
+		return 1
+	else
+		// größten gemeinsamen Teiler ermitteln
+		while ((x !== y) && (x !== 1)) {
+			if (y > x)
+				y = y - x
+			else
+				x = x - y
+		}
+		
+	if (x != 0) {
+		// Bruch kürzen
+		this.p = this.p / x
+		this.q = this.q / x
+	}
+	
 }
 
 ℚ.prototype.plus = function(b) {
@@ -54,3 +106,11 @@ function ℚ(numerator, denominator) {
 ℚ.prototype.toString = function() {
 	return this.p + '/' + this.q
 }
+
+/*
+ * Tests
+ */
+let p = new ℚ(5,10)
+console.log(p)
+let a = p.dot(8)
+console.log(a*2)
