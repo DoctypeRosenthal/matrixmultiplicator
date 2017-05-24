@@ -1,4 +1,4 @@
-// The Matrix data type
+// THE MATRIX DATA TYPE
 
 /**
 * Matrix Datatype.
@@ -41,10 +41,23 @@ function Matrix(arr = [[0]]) {
 		}
 	}
 
+	function plus(B) {
+		if (!B instanceof Matrix) {
+			throw new Error('Keine Addition von Matrix mit ' + typeof B + ' definiert.')
+		}
+
+		if (B.cols().length !== this.cols().length || B.rows().length !== data.length) {
+			throw new Error("Matrizenaddition nicht definiert. Ungleiche Anzahl von Zeilen und Spalten von A und B.")
+		}
+
+		return new Matrix(
+			data.map((rowA, i) => rowA.map((x, j) => x + B[i][j]))
+		)
+	}
 
 	function dot(B) {
 		if (!B instanceof Matrix || isNaN(B)) {
-			throw Error('Keine Matrizenmmultiplikation mit ' + typeof B + ' definiert.')
+			throw new Error('Keine Matrizenmmultiplikation mit ' + typeof B + ' definiert.')
 		}
 
 		if (isNum(B)) {
@@ -62,6 +75,7 @@ function Matrix(arr = [[0]]) {
 			data.map(rowA => B.cols().map(colB => colB.map((x, i) => x*rowA[i]).reduce((a, b) => a+b, 0)))
 		)
 	}
+
 
 	function toString() {
 		return data.toSource()

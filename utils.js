@@ -23,9 +23,8 @@ const utils = (function() {
 		return letter.charCodeAt() - 65
 	}
 
-	function isNum(str) {
-		if (typeof str !== 'string') return false
-	    return !isNaN(parseFloat(str)) || str.match(/\d+\/\d+/)
+	function isNum(x) {
+	    return !isNaN(parseFloat(x))
 	}
 
 	function isMatrixName(str) {
@@ -43,6 +42,7 @@ const utils = (function() {
 
 	/**
 	 * Group a string into arrays of strings by the string's brackets.
+	 * 
 	 * String needs to have no spaces
 	 * @param  {[type]} str [description]
 	 * @return {[type]}     [description]

@@ -1,6 +1,6 @@
-// The rational Number Type
+// THE RATIONAL NUMBER TYPE / FRACTION
 
-function ℚ(numerator, denominator) {
+function Frac(numerator, denominator) {
 	if (denominator === 0) throw Error("Bruch darf keine 0 im Nenner haben")
 
 	let [p, q] = reduce(numerator, denominator) // reduce fraction if possible
@@ -39,9 +39,9 @@ function ℚ(numerator, denominator) {
 	}
 
 	function plus(b) {
-		if (b instanceof ℚ) {
+		if (b instanceof Frac) {
 			// add a fraction to a fraction
-			return new ℚ(p*b.q + q*b.p, q*b.q)
+			return new Frac(p*b.q + q*b.p, q*b.q)
 		}
 
 		if (!isNaN(b)) {
@@ -49,14 +49,14 @@ function ℚ(numerator, denominator) {
 			if (b*q+p === q) {
 				return 1 // dont make a fraction
 			}
-			return new ℚ(b*q+p, q)
+			return new Frac(b*q+p, q)
 		}
 	}
 
 	function dot(b) {
-		if (b instanceof ℚ) {
+		if (b instanceof Frac) {
 			// multiply fractions
-			return new ℚ(p*b.p, q*b.q)
+			return new Frac(p*b.p, q*b.q)
 		}
 
 		if (!isNaN(b)) {
@@ -64,14 +64,14 @@ function ℚ(numerator, denominator) {
 			if (b*p === q) {
 				return 1 // dont make a fraction
 			}
-			return new ℚ(b*p, q)
+			return new Frac(b*p, q)
 		}
 	}
 
 	function slash(b) {
-		if (b instanceof ℚ) {
+		if (b instanceof Frac) {
 			// swap numerator and denominator and multiply
-			return new ℚ(q*b.p, p*b.q)
+			return new Frac(q*b.p, p*b.q)
 		}
 		
 		if (!isNaN(b)) {
@@ -79,7 +79,7 @@ function ℚ(numerator, denominator) {
 				return 1
 			}
 
-			return new ℚ(p, b*q)
+			return new Frac(p, b*q)
 		}
 	}
 
@@ -117,7 +117,7 @@ function ℚ(numerator, denominator) {
 /*
  * Tests
  */
-let p = new ℚ(5,10)
+let p = new Frac(5,10)
 console.log(p)
 let a = p.dot(8)
 console.log(a*2)
